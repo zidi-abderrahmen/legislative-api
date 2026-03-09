@@ -29,5 +29,5 @@ public class Law {
             joinColumns = @JoinColumn(name = "law_id"),
             inverseJoinColumns = @JoinColumn(name = "keyword_id")
     )
-    private Set<SearchedKeyword> keywords;
+    private Set<Keyword> keywords;
 }

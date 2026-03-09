@@ -9,13 +9,13 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name = "searched_keywords",
+@Table(name = "keywords",
         indexes = @Index(name = "idx_keyword_text", columnList = "text"))
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchedKeyword {
+public class Keyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
