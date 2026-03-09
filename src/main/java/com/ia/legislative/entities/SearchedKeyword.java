@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "searched_keywords",
         indexes = @Index(name = "idx_keyword_text", columnList = "text"))
@@ -21,4 +23,7 @@ public class SearchedKeyword {
 
     @Column(nullable = false, unique = true, length = 50)
     private String text;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "keywords")
+    private Set<Law> laws;
 }
