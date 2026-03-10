@@ -1,5 +1,6 @@
 package com.ia.legislative.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,5 +30,6 @@ public class Law {
             joinColumns = @JoinColumn(name = "law_id"),
             inverseJoinColumns = @JoinColumn(name = "keyword_id")
     )
+    @JsonIgnoreProperties("laws")
     private Set<Keyword> keywords;
 }
