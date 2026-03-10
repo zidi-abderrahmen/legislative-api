@@ -1,5 +1,6 @@
 package com.ia.legislative.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,5 +26,6 @@ public class Keyword {
     private String text;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "keywords")
+    @JsonIgnoreProperties("keywords")
     private Set<Law> laws;
 }
