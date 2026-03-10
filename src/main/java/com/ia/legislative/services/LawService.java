@@ -3,12 +3,9 @@ package com.ia.legislative.services;
 import com.ia.legislative.entities.Law;
 import com.ia.legislative.repositories.LawRepository;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -35,11 +32,11 @@ public class LawService {
         return lawRepository.searchByKeywordsNative(query);
     }
 
-    public Law createLaw(Law law) {
-        if (lawRepository.findByTitle(law.getTitle()).isPresent()) {
+    public Law createLaw(Law lawDTO) {
+        if (lawRepository.findByTitle(lawDTO.getTitle()).isPresent()) {
             throw new RuntimeException("Law already exists");
         }
-        return lawRepository.save(law);
+        return lawRepository.save(lawDTO);
     }
 
     public Law updateLaw(Long id, Law law) {

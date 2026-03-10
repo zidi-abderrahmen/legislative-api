@@ -1,7 +1,6 @@
 package com.ia.legislative.repositories;
 
 import com.ia.legislative.entities.Keyword;
-import com.ia.legislative.entities.Law;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
