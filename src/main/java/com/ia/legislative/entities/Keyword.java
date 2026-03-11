@@ -1,12 +1,14 @@
 package com.ia.legislative.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,10 +24,11 @@ public class Keyword {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(max = 50)
     @Column(nullable = false, unique = true, length = 50)
     private String text;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "keywords")
-    @JsonIgnoreProperties("keywords")
-    private Set<Law> laws;
+    private Set<Law> laws = new HashSet<>();
 }
