@@ -11,8 +11,6 @@ This API provides CRUD operations, search capabilities, and structured responses
 - [Tech Stack](#tech-stack)
 - [Setup](#setup)
 - [API Endpoints](#api-endpoints)
-- [Laws](#laws)
-- [Keywords](#keywords)
 - [Error Handling](#error-handling)
 - [Contributing](#contributing)
 
@@ -82,6 +80,7 @@ http://localhost:8080/api/
 ## API Endpoints
 
 1. Laws
+
 | Method | Endpoint                           | Description                      |
 | ------ | ---------------------------------- | -------------------------------- |
 | GET    | `/api/laws`                        | Get all laws                     |
@@ -95,6 +94,7 @@ http://localhost:8080/api/
 | DELETE | `/api/laws/{id}`                   | Delete a law (`204 No Content`)  |
 
 2. Keywords
+
 | Method | Endpoint                             | Description                          |
 | ------ | ------------------------------------ | ------------------------------------ |
 | GET    | `/api/keywords`                      | Get all keywords                     |
