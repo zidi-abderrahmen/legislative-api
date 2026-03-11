@@ -1,8 +1,10 @@
 package com.ia.legislative.controllers;
 
-import com.ia.legislative.entities.Keyword;
+import com.ia.legislative.dtos.KeywordDTO;
+import com.ia.legislative.dtos.LawDTO;
 import com.ia.legislative.services.KeywordService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,37 +18,43 @@ public class KeywordController {
     private final KeywordService keywordService;
 
     @GetMapping
-    public List<Keyword> findAll() {
-        return keywordService.findAll();
+    public List<KeywordDTO> getAllKeywords() {
+        return keywordService.getAllKeywords();
     }
 
     @GetMapping("/{id}")
-    public Keyword findById(@PathVariable Long id) {
-        return keywordService.findById(id);
+    public KeywordDTO findKeywordById(@PathVariable Long id) {
+        return keywordService.findKeywordById(id);
     }
 
     @GetMapping("/text/{text}")
-    public Keyword getKeywordByText(@PathVariable String text) {
+    public KeywordDTO getKeywordByText(@PathVariable String text) {
         return keywordService.getKeywordByText(text);
     }
 
     @GetMapping("/search")
-    public List<Keyword> getKeywordsByKeyword(@RequestParam String keyword) {
-        return keywordService.getKeywordsByKeyword(keyword);
+    public List<KeywordDTO> searchKeywordsByText(@RequestParam String keyword) {
+        return keywordService.searchKeywordsByText(keyword);
+    }
+
+    @GetMapping("/{id}/laws")
+    public List<LawDTO> getLawsByKeywordId(@PathVariable Long id) {
+        return keywordService.getLawsByKeywordId(id);
     }
 
     @PostMapping
-    public Keyword createKeyword(@RequestBody Keyword keyword) {
-        return keywordService.createKeyword(keyword);
+    public KeywordDTO createKeyword(@RequestBody KeywordDTO dto) {
+        return keywordService.createKeyword(dto);
     }
 
     @PutMapping("{id}")
-    public Keyword updateKeyword(@PathVariable Long id, @RequestBody Keyword keyword) {
-        return keywordService.updateKeyword(id, keyword);
+    public KeywordDTO updateKeyword(@PathVariable Long id, @RequestBody KeywordDTO dto) {
+        return keywordService.updateKeyword(id, dto);
     }
 
     @DeleteMapping("{id}")
-    public void deleteKeyword(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteKeywordById(@PathVariable Long id) {
         keywordService.deleteKeywordById(id);
     }
 }
