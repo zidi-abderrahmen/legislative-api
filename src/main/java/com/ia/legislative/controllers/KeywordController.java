@@ -1,7 +1,8 @@
 package com.ia.legislative.controllers;
 
-import com.ia.legislative.dtos.KeywordDTO;
-import com.ia.legislative.dtos.LawDTO;
+import com.ia.legislative.dtos.KeywordRequestDTO;
+import com.ia.legislative.dtos.KeywordResponseDTO;
+import com.ia.legislative.dtos.LawResponseDTO;
 import com.ia.legislative.services.KeywordService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,37 +19,42 @@ public class KeywordController {
     private final KeywordService keywordService;
 
     @GetMapping
-    public List<KeywordDTO> getAllKeywords() {
+    public List<KeywordResponseDTO> getAllKeywords() {
         return keywordService.getAllKeywords();
     }
 
     @GetMapping("/{id}")
-    public KeywordDTO findKeywordById(@PathVariable Long id) {
+    public KeywordResponseDTO findKeywordById(@PathVariable Long id) {
         return keywordService.getKeywordById(id);
     }
 
     @GetMapping("/text/{text}")
-    public KeywordDTO getKeywordByText(@PathVariable String text) {
+    public KeywordResponseDTO getKeywordByText(@PathVariable String text) {
         return keywordService.getKeywordByText(text);
     }
 
     @GetMapping("/search")
-    public List<KeywordDTO> searchKeywordsByText(@RequestParam String keyword) {
-        return keywordService.searchKeywordsByText(keyword);
+    public List<KeywordResponseDTO> searchKeywordsByText(@RequestParam String keyword) {
+        return keywordService.searchKeywords(keyword);
     }
 
-    @GetMapping("/{id}/laws")
-    public List<LawDTO> getLawsByKeywordId(@PathVariable Long id) {
+    @GetMapping("/id/{id}/laws")
+    public List<LawResponseDTO> getLawsByKeywordId(@PathVariable Long id) {
         return keywordService.getLawsByKeywordId(id);
     }
 
+    @GetMapping("/text/{text}/laws")
+    public List<LawResponseDTO> getLawsByKeywordText(@PathVariable String text) {
+        return keywordService.getLawsByKeywordText(text);
+    }
+
     @PostMapping
-    public KeywordDTO createKeyword(@RequestBody KeywordDTO dto) {
+    public KeywordResponseDTO createKeyword(@RequestBody KeywordRequestDTO dto) {
         return keywordService.createKeyword(dto);
     }
 
     @PutMapping("{id}")
-    public KeywordDTO updateKeyword(@PathVariable Long id, @RequestBody KeywordDTO dto) {
+    public KeywordResponseDTO updateKeyword(@PathVariable Long id, @RequestBody KeywordRequestDTO dto) {
         return keywordService.updateKeyword(id, dto);
     }
 
