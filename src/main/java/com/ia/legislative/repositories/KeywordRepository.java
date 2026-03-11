@@ -18,7 +18,7 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
                     "WHERE to_tsvector('simple', k.text) @@ to_tsquery('simple', :query)",
             nativeQuery = true
     )
-    List<Keyword> searchKeywordsByText(@Param("query") String query);
+    List<Keyword> searchByLawsNative(@Param("query") String query);
 
     @Query("""
        SELECT l FROM Keyword k
