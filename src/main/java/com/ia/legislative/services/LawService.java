@@ -121,6 +121,7 @@ public class LawService {
     public void deleteLawById(Long id) {
         Law law = lawRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Law with id " + id + " not found"));
+        law.getKeywords().clear();
         lawRepository.delete(law);
     }
 }
