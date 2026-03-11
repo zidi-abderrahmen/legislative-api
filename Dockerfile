@@ -1,10 +1,10 @@
-# Build stage
-FROM maven:3.8.5-openjdk-17 AS build
+# Build stage: Use Maven with JDK 21
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Run stage - FIX: Use eclipse-temurin instead of openjdk
-FROM eclipse-temurin:17-jre-jammy
+# Run stage: Use Eclipse Temurin JRE 21 (optimized for size)
+FROM eclipse-temurin:21-jre-jammy
 COPY --from=build /target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
