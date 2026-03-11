@@ -53,7 +53,7 @@ public class LawController {
     }
 
     @PutMapping("/{id}")
-    public LawResponseDTO updateLaw(@PathVariable Long id, @RequestBody LawResponseDTO dto) {
+    public LawResponseDTO updateLaw(@PathVariable Long id, @RequestBody LawRequestDTO dto) {
         return lawService.updateLaw(id, dto);
     }
 

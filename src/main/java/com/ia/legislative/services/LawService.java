@@ -96,7 +96,7 @@ public class LawService {
         return lawMapper.toDTO(lawRepository.save(law));
     }
 
-    public LawResponseDTO updateLaw(Long id, LawResponseDTO dto) {
+    public LawResponseDTO updateLaw(Long id, LawRequestDTO dto) {
         Law existingLaw = lawRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Law with id " + id + " not found"));
 
@@ -107,6 +107,14 @@ public class LawService {
                 });
 
         existingLaw.setTitle(dto.title());
+
+        if (dto.keywordIds() != null && !dto.keywordIds().isEmpty()) {
+            Set<Keyword> keywords = new HashSet<>(keywordRepository.findAllById(dto.keywordIds()));
+            existingLaw.setKeywords(keywords);
+        } else {
+            existingLaw.getKeywords().clear();
+        }
+
         return lawMapper.toDTO(lawRepository.save(existingLaw));
     }
 
