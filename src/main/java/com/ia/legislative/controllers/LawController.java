@@ -1,6 +1,7 @@
 package com.ia.legislative.controllers;
 
-import com.ia.legislative.entities.Law;
+import com.ia.legislative.dtos.KeywordDTO;
+import com.ia.legislative.dtos.LawDTO;
 import com.ia.legislative.services.LawService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,33 +17,38 @@ public class LawController {
     private final LawService lawService;
 
     @GetMapping
-    public List<Law> getAllLaws() {
+    public List<LawDTO> getAllLaws() {
         return lawService.getAllLaws();
     }
 
     @GetMapping("/{id}")
-    public Law getLawById(@PathVariable Long id) {
+    public LawDTO getLawById(@PathVariable Long id) {
         return lawService.getLawById(id);
     }
 
-    @GetMapping("/title/{name}")
-    public Law getLawByName(@PathVariable String name) {
-        return lawService.getLawByName(name);
+    @GetMapping("/title/{title}")
+    public LawDTO getLawByTitle(@PathVariable String title) {
+        return lawService.getLawByTitle(title);
     }
 
     @GetMapping("/search")
-    public List<Law> getLawsByKeyword(@RequestParam String keyword) {
-        return lawService.getLawsByKeyword(keyword);
+    public List<LawDTO> searchLawsByText(@RequestParam String keyword) {
+        return lawService.searchLawsByText(keyword);
+    }
+
+    @GetMapping("/{id}/keywords")
+    public List<KeywordDTO> getKeywordsByLawId(@PathVariable Long id) {
+        return lawService.getKeywordsByLawId(id);
     }
 
     @PostMapping
-    public Law createLaw(@RequestBody Law law) {
-        return lawService.createLaw(law);
+    public LawDTO createLaw(@RequestBody LawDTO dto) {
+        return lawService.createLaw(dto);
     }
 
     @PutMapping("/{id}")
-    public Law updateLaw(@PathVariable Long id, @RequestBody Law law) {
-        return lawService.updateLaw(id, law);
+    public LawDTO updateLaw(@PathVariable Long id, @RequestBody LawDTO dto) {
+        return lawService.updateLaw(id, dto);
     }
 
     @DeleteMapping("/{id}")
