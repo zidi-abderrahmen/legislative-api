@@ -4,13 +4,16 @@ import com.ia.legislative.dtos.KeywordResponseDTO;
 import com.ia.legislative.dtos.LawRequestDTO;
 import com.ia.legislative.dtos.LawResponseDTO;
 import com.ia.legislative.services.LawService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/laws")
 @CrossOrigin(origins = "*")
 public class LawController {
@@ -33,8 +36,8 @@ public class LawController {
     }
 
     @GetMapping("/search")
-    public List<LawResponseDTO> searchLawsByText(@RequestParam String keyword) {
-        return lawService.searchLawsByText(keyword);
+    public List<LawResponseDTO> searchLawsByText(@RequestParam String query) {
+        return lawService.searchLawsByText(query);
     }
 
     @GetMapping("/id/{id}/keywords")
@@ -48,16 +51,18 @@ public class LawController {
     }
 
     @PostMapping
-    public LawResponseDTO createLaw(@RequestBody LawRequestDTO dto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public LawResponseDTO createLaw(@Valid @RequestBody LawRequestDTO dto) {
         return lawService.createLaw(dto);
     }
 
     @PutMapping("/{id}")
-    public LawResponseDTO updateLaw(@PathVariable Long id, @RequestBody LawRequestDTO dto) {
+    public LawResponseDTO updateLaw(@PathVariable Long id, @Valid @RequestBody LawRequestDTO dto) {
         return lawService.updateLaw(id, dto);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteLawById(@PathVariable Long id) {
         lawService.deleteLawById(id);
     }

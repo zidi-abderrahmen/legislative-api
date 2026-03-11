@@ -4,14 +4,16 @@ import com.ia.legislative.dtos.KeywordRequestDTO;
 import com.ia.legislative.dtos.KeywordResponseDTO;
 import com.ia.legislative.dtos.LawResponseDTO;
 import com.ia.legislative.services.KeywordService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/keywords")
 @CrossOrigin(origins = "*")
 public class KeywordController {
@@ -34,8 +36,8 @@ public class KeywordController {
     }
 
     @GetMapping("/search")
-    public List<KeywordResponseDTO> searchKeywordsByText(@RequestParam String keyword) {
-        return keywordService.searchKeywords(keyword);
+    public List<KeywordResponseDTO> searchKeywordsByText(@RequestParam String query) {
+        return keywordService.searchKeywords(query);
     }
 
     @GetMapping("/id/{id}/laws")
@@ -49,16 +51,17 @@ public class KeywordController {
     }
 
     @PostMapping
-    public KeywordResponseDTO createKeyword(@RequestBody KeywordRequestDTO dto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public KeywordResponseDTO createKeyword(@Valid @RequestBody KeywordRequestDTO dto) {
         return keywordService.createKeyword(dto);
     }
 
-    @PutMapping("{id}")
-    public KeywordResponseDTO updateKeyword(@PathVariable Long id, @RequestBody KeywordRequestDTO dto) {
+    @PutMapping("/{id}")
+    public KeywordResponseDTO updateKeyword(@PathVariable Long id, @Valid @RequestBody KeywordRequestDTO dto) {
         return keywordService.updateKeyword(id, dto);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteKeywordById(@PathVariable Long id) {
         keywordService.deleteKeywordById(id);
