@@ -18,7 +18,7 @@ public interface LawRepository extends JpaRepository<Law, Long> {
                     "WHERE to_tsvector('simple', l.title) @@ to_tsquery('simple', :query)",
             nativeQuery = true
     )
-    List<Law> searchByKeywordsNative(@Param("query") String query);
+    List<Law> searchedLawsByText(@Param("query") String query);
 
     @Query("""
        SELECT k FROM Law l
