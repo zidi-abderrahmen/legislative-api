@@ -11,8 +11,6 @@ This API provides CRUD operations, search capabilities, and structured responses
 - [Tech Stack](#tech-stack)
 - [Setup](#setup)
 - [API Endpoints](#api-endpoints)
-- [Laws](#laws)
-- [Keywords](#keywords)
 - [Error Handling](#error-handling)
 - [Contributing](#contributing)
 
