@@ -1,7 +1,14 @@
 package com.ia.legislative.services;
 
+import com.ia.legislative.dtos.KeywordDTO;
+import com.ia.legislative.dtos.LawDTO;
 import com.ia.legislative.entities.Law;
+import com.ia.legislative.exceptions.ResourceAlreadyExistsException;
+import com.ia.legislative.exceptions.ResourceNotFoundException;
+import com.ia.legislative.mappers.KeywordMapper;
+import com.ia.legislative.mappers.LawMapper;
 import com.ia.legislative.repositories.LawRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,45 +19,77 @@ import java.util.List;
 public class LawService {
 
     private final LawRepository lawRepository;
+    private final KeywordMapper keywordMapper;
+    private final LawMapper lawMapper;
 
-    public List<Law> getAllLaws() {
-        return lawRepository.findAll();
+    public List<LawDTO> getAllLaws() {
+        return lawRepository.findAll()
+                .stream()
+                .map(lawMapper::toDTO)
+                .toList();
     }
 
-    public Law getLawById(Long id) {
-        return lawRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Law not found"));
+    public LawDTO getLawById(Long id) {
+        Law law = lawRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Law with id " + id + " not found"));
+        return lawMapper.toDTO(law);
     }
 
-    public Law getLawByName(String name) {
-        return lawRepository.findByTitle(name)
-                .orElseThrow(() -> new RuntimeException("Law not found"));
+    public LawDTO getLawByTitle(String title) {
+        Law law = lawRepository.findByTitle(title)
+                .orElseThrow(() -> new ResourceNotFoundException("Law with title '" + title + "' not found"));
+        return lawMapper.toDTO(law);
     }
 
-    public List<Law> getLawsByKeyword(String keyword) {
-        String query = String.join(" | ", keyword.split("\\s+"));
-        return lawRepository.searchByKeywordsNative(query);
-    }
-
-    public Law createLaw(Law lawDTO) {
-        if (lawRepository.findByTitle(lawDTO.getTitle()).isPresent()) {
-            throw new RuntimeException("Law already exists");
+    public List<LawDTO> searchLawsByText(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return List.of();
         }
-        return lawRepository.save(lawDTO);
+        String query = String.join(" | ", keyword.split("\\s+"));
+        return lawRepository.searchByKeywordsNative(query)
+                .stream()
+                .map(lawMapper::toDTO)
+                .toList();
     }
 
-    public Law updateLaw(Long id, Law law) {
+    @Transactional
+    public List<KeywordDTO> getKeywordsByLawId(Long id) {
+        if (!lawRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Law with id " + id + " not found");
+        }
+        return lawRepository.findKeywordsByLawId(id)
+                .stream()
+                .map(keywordMapper::toDTO)
+                .toList();
+    }
+
+    public LawDTO createLaw(LawDTO dto) {
+        if (lawRepository.findByTitle(dto.title()).isPresent()) {
+            throw new ResourceAlreadyExistsException("Law with title '" + dto.title() + "' already exists");
+        }
+        Law law = new Law();
+        law.setTitle(dto.title());
+
+        return lawMapper.toDTO(lawRepository.save(law));
+    }
+
+    public LawDTO updateLaw(Long id, LawDTO dto) {
         Law existingLaw = lawRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Law not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Law with id " + id + " not found"));
 
-        existingLaw.setTitle(law.getTitle());
-        existingLaw.setDescription(law.getDescription());
-        existingLaw.setKeywords(law.getKeywords());
+        lawRepository.findByTitle(dto.title())
+                .filter(l -> !l.getId().equals(id))
+                .ifPresent(l -> {
+                    throw new ResourceAlreadyExistsException("Law with title '" + dto.title() + "' already exists");
+                });
 
-        return lawRepository.save(existingLaw);
+        existingLaw.setTitle(dto.title());
+        return lawMapper.toDTO(lawRepository.save(existingLaw));
     }
 
     public void deleteLawById(Long id) {
-        lawRepository.deleteById(id);
+        Law law = lawRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Law with id " + id + " not found"));
+        lawRepository.delete(law);
     }
 }
