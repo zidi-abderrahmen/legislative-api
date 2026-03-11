@@ -1,9 +1,11 @@
 package com.ia.legislative.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,9 +20,12 @@ public class Law {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotBlank
+    @Size(max = 200)
+    @Column(nullable = false, length = 200)
     private String title;
 
+    @NotBlank
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
@@ -28,8 +33,11 @@ public class Law {
     @JoinTable(
             name = "law_keywords",
             joinColumns = @JoinColumn(name = "law_id"),
-            inverseJoinColumns = @JoinColumn(name = "keyword_id")
+            inverseJoinColumns = @JoinColumn(name = "keyword_id"),
+            indexes = {
+                    @Index(name = "idx_law_keyword_law", columnList = "law_id"),
+                    @Index(name = "idx_law_keyword_keyword", columnList = "keyword_id")
+            }
     )
-    @JsonIgnoreProperties("laws")
-    private Set<Keyword> keywords;
+    private Set<Keyword> keywords = new HashSet<>();
 }
