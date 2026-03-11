@@ -1,6 +1,6 @@
 package com.ia.legislative.dtos;
 
-public record KeywordDTO (
+public record KeywordResponseDTO(
         Long id,
         String text
 ) {}
