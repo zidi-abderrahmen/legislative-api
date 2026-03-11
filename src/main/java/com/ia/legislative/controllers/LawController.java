@@ -36,9 +36,14 @@ public class LawController {
         return lawService.searchLawsByText(keyword);
     }
 
-    @GetMapping("/{id}/keywords")
+    @GetMapping("/id/{id}/keywords")
     public List<KeywordResponseDTO> getKeywordsByLawId(@PathVariable Long id) {
         return lawService.getKeywordsByLawId(id);
+    }
+
+    @GetMapping("/title/{title}/keywords")
+    public List<KeywordResponseDTO> getKeywordsByLawTitle(@PathVariable String title) {
+        return lawService.getKeywordsByLawTitle(title);
     }
 
     @PostMapping
