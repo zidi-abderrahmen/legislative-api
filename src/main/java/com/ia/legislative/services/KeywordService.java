@@ -29,7 +29,7 @@ public class KeywordService {
                 .toList();
     }
 
-    public KeywordDTO findKeywordById(Long id) {
+    public KeywordDTO getKeywordById(Long id) {
         Keyword keyword = keywordRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Keyword with id " + id + " not found"));
         return keywordMapper.toDTO(keyword);
