@@ -69,6 +69,7 @@ public class LawService {
         }
         Law law = new Law();
         law.setTitle(dto.title());
+        law.setDescription(dto.description());
 
         return lawMapper.toDTO(lawRepository.save(law));
     }
