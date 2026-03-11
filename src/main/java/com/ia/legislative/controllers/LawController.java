@@ -1,6 +1,7 @@
 package com.ia.legislative.controllers;
 
 import com.ia.legislative.dtos.KeywordResponseDTO;
+import com.ia.legislative.dtos.LawRequestDTO;
 import com.ia.legislative.dtos.LawResponseDTO;
 import com.ia.legislative.services.LawService;
 import lombok.AllArgsConstructor;
@@ -47,7 +48,7 @@ public class LawController {
     }
 
     @PostMapping
-    public LawResponseDTO createLaw(@RequestBody LawResponseDTO dto) {
+    public LawResponseDTO createLaw(@RequestBody LawRequestDTO dto) {
         return lawService.createLaw(dto);
     }
 

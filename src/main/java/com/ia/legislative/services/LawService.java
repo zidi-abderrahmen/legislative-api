@@ -1,24 +1,30 @@
 package com.ia.legislative.services;
 
 import com.ia.legislative.dtos.KeywordResponseDTO;
+import com.ia.legislative.dtos.LawRequestDTO;
 import com.ia.legislative.dtos.LawResponseDTO;
+import com.ia.legislative.entities.Keyword;
 import com.ia.legislative.entities.Law;
 import com.ia.legislative.exceptions.ResourceAlreadyExistsException;
 import com.ia.legislative.exceptions.ResourceNotFoundException;
 import com.ia.legislative.mappers.KeywordMapper;
 import com.ia.legislative.mappers.LawMapper;
+import com.ia.legislative.repositories.KeywordRepository;
 import com.ia.legislative.repositories.LawRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class LawService {
 
     private final LawRepository lawRepository;
+    private final KeywordRepository keywordRepository;
     private final KeywordMapper keywordMapper;
     private final LawMapper lawMapper;
 
@@ -74,13 +80,18 @@ public class LawService {
                 .toList();
     }
 
-    public LawResponseDTO createLaw(LawResponseDTO dto) {
+    public LawResponseDTO createLaw(LawRequestDTO dto) {
         if (lawRepository.findByTitle(dto.title()).isPresent()) {
             throw new ResourceAlreadyExistsException("Law with title '" + dto.title() + "' already exists");
         }
         Law law = new Law();
         law.setTitle(dto.title());
         law.setDescription(dto.description());
+
+        if (dto.keywordIds() != null && !dto.keywordIds().isEmpty()) {
+            Set<Keyword> keywords = new HashSet<>(keywordRepository.findAllById(dto.keywordIds()));
+            law.setKeywords(keywords);
+        }
 
         return lawMapper.toDTO(lawRepository.save(law));
     }
