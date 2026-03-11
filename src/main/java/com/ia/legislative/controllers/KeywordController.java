@@ -5,7 +5,6 @@ import com.ia.legislative.dtos.KeywordResponseDTO;
 import com.ia.legislative.dtos.LawResponseDTO;
 import com.ia.legislative.services.KeywordService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
