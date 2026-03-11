@@ -9,13 +9,13 @@ import com.ia.legislative.mappers.KeywordMapper;
 import com.ia.legislative.mappers.LawMapper;
 import com.ia.legislative.repositories.LawRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LawService {
 
     private final LawRepository lawRepository;
@@ -58,6 +58,17 @@ public class LawService {
             throw new ResourceNotFoundException("Law with id " + id + " not found");
         }
         return lawRepository.findKeywordsByLawId(id)
+                .stream()
+                .map(keywordMapper::toDTO)
+                .toList();
+    }
+
+    @Transactional
+    public List<KeywordResponseDTO> getKeywordsByLawTitle(String title) {
+        if (lawRepository.findByTitle(title).isEmpty()) {
+            throw new ResourceNotFoundException("Law with title '" + title + "' not found");
+        }
+        return lawRepository.findKeywordsByLawTitle(title)
                 .stream()
                 .map(keywordMapper::toDTO)
                 .toList();
