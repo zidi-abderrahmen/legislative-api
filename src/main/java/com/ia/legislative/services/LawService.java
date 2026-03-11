@@ -46,7 +46,7 @@ public class LawService {
             return List.of();
         }
         String query = String.join(" | ", keyword.split("\\s+"));
-        return lawRepository.searchByKeywordsNative(query)
+        return lawRepository.searchedLawsByText(query)
                 .stream()
                 .map(lawMapper::toDTO)
                 .toList();
