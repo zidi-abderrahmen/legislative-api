@@ -26,4 +26,11 @@ public interface LawRepository extends JpaRepository<Law, Long> {
        WHERE l.id = :id
        """)
     List<Keyword> findKeywordsByLawId(@Param("id") Long id);
+
+    @Query("""
+        SELECT k FROM Law l
+        JOIN l.keywords k
+        WHERE l.title = :title
+        """)
+    List<Keyword> findKeywordsByLawTitle(@Param("title") String title);
 }
