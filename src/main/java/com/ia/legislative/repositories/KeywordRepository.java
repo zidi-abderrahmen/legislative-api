@@ -15,12 +15,10 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
     @Query(
             value = "SELECT k.* FROM keywords k " +
-                    "JOIN law_keywords lk ON k.id = lk.keyword_id " +
-                    "JOIN laws l ON lk.law_id = l.id " +
                     "WHERE to_tsvector('simple', k.text) @@ to_tsquery('simple', :query)",
             nativeQuery = true
     )
-    List<Keyword> searchByLawsNative(@Param("query") String query);
+    List<Keyword> searchKeywordsByText(@Param("query") String query);
 
     @Query("""
        SELECT l FROM Keyword k
