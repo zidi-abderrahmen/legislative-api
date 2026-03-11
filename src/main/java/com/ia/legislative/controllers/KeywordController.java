@@ -24,7 +24,7 @@ public class KeywordController {
 
     @GetMapping("/{id}")
     public KeywordDTO findKeywordById(@PathVariable Long id) {
-        return keywordService.findKeywordById(id);
+        return keywordService.getKeywordById(id);
     }
 
     @GetMapping("/text/{text}")
