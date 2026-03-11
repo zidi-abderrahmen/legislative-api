@@ -1,6 +1,6 @@
 package com.ia.legislative.dtos;
 
-public record LawDTO(
+public record LawResponseDTO(
         Long id,
         String title,
         String description
