@@ -1,5 +1,6 @@
 package com.ia.legislative.repositories;
 
+import com.ia.legislative.entities.Keyword;
 import com.ia.legislative.entities.Law;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,10 @@ public interface LawRepository extends JpaRepository<Law, Long> {
     )
     List<Law> searchByKeywordsNative(@Param("query") String query);
 
+    @Query("""
+       SELECT k FROM Law l
+       JOIN l.keywords k
+       WHERE l.id = :id
+       """)
+    List<Keyword> findKeywordsByLawId(@Param("id") Long id);
 }
