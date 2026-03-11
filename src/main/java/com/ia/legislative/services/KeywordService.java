@@ -123,7 +123,7 @@ public class KeywordService {
             existingKeyword.setLaws(laws);
         }else {
             for (Law law : existingKeyword.getLaws()) {
-                law.setKeywords(null);
+                law.getKeywords().remove(existingKeyword);
             }
             existingKeyword.getLaws().clear();
         }
