@@ -82,6 +82,7 @@ http://localhost:8080/api/
 ## API Endpoints
 
 1. Laws
+
 | Method | Endpoint                           | Description                      |
 | ------ | ---------------------------------- | -------------------------------- |
 | GET    | `/api/laws`                        | Get all laws                     |
@@ -95,6 +96,7 @@ http://localhost:8080/api/
 | DELETE | `/api/laws/{id}`                   | Delete a law (`204 No Content`)  |
 
 2. Keywords
+
 | Method | Endpoint                             | Description                          |
 | ------ | ------------------------------------ | ------------------------------------ |
 | GET    | `/api/keywords`                      | Get all keywords                     |
