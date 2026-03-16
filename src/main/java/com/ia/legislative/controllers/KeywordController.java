@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/keywords")
-@CrossOrigin(origins = "*")
 public class KeywordController {
 
     private final KeywordService keywordService;

@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/laws")
-@CrossOrigin(origins = "*")
 public class LawController {
 
     private final LawService lawService;
